@@ -13,6 +13,19 @@
 - Retrofit
 - Room
 - TDD con JUnit
-- CleanCode 
+- SOLID
 - JetPack Compose
-- Inyección de depencias con Koin
+- DI con Koin
+
+## API RESTFul
+[obtener la información](https://pokeapi.co/)
+[encontrar las imágenes](https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png)
+
+## Términos de aceptación
+Dentro del detalle de cada pokemon debe ir:
+- Tipo
+- Evolución
+- Ataques
+- Habilidades
+- Lugares donde se puede encontrar
+- Disponer de un submenu
