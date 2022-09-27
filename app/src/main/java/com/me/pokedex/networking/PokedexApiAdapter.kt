@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 open class PokedexApiAdapter : ApiAdapter {
 
-    override val CANTIDAD: Int = 2
+    override val CANTIDAD: Int = 151
 
     override suspend fun fetchPokemons(): List<PokemonResultDto>? {
         val url = "${BASE_URL}${PARAMS[Option.POKEMON.ordinal]}?limit=${CANTIDAD}"
