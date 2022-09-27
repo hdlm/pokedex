@@ -7,18 +7,25 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 
 @Dao
 interface PokemonDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(pokemon: PokemonDbModel)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(pokemons: List<PokemonDbModel>)
+
     @Query("SELECT * FROM pokemon")
     fun getAllPokemon(): Flow<List<PokemonDbModel>>
 
     @Query("SELECT * FROM pokemon WHERE uid = :id ")
     fun getPokemonById(id: String) : Flow<PokemonDbModel>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(pokemon: PokemonDbModel)
+    @Query("DELETE FROM pokemon")
+    suspend fun deleteAll()
 
-    fun getPokemonByIdDistinctUntilChanged(id: String) : Flow<PokemonDbModel> =
-        getPokemonById(id).distinctUntilChanged()
+    @Transaction
+    suspend fun deleteAllAndUpdate(pokemons: List<PokemonDbModel>) {
+        deleteAll()
+        insert(pokemons)
+    }
 
-    fun getAllPokemonDistinctUntilChanged() : Flow<List<PokemonDbModel>> =
-        getAllPokemon().distinctUntilChanged()
 }

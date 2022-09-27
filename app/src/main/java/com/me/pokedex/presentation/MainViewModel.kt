@@ -1,31 +1,40 @@
 package com.me.pokedex.presentation
 
-import androidx.lifecycle.ViewModel
-import com.me.pokedex.data.database.repository.PokemonRepositoryImpl
-import com.me.pokedex.networking.model.PokemonModel
+import android.util.Log
+import androidx.lifecycle.viewModelScope
+import com.me.pokedex.commons.CoroutineHelper
+import com.me.pokedex.networking.model.PokemonDto
+import com.me.pokedex.presentation.domain.Pokemon
+import com.me.pokedex.presentation.usecase.FetchPokemonsDataUseCase
+import contextProvider.CoroutineContextProvider
+import contextProvider.CoroutineContextProviderImpl
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestScope
 
-class MainViewModel (
-    private val repository: PokemonRepositoryImpl,
-): ViewModel() {
-    val pokemons: List<PokemonModel>
-        get() = repository.pokemons
+class MainViewModel(
+    private val fetchPokemonsDataUseCase : FetchPokemonsDataUseCase,
+) : KoinViewModel() {
+    val flowOfpokemons = fetchPokemonsDataUseCase.getPokemons().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed((5000)),
+        initialValue = emptyList()
+    )
 
-    /**
-     * Data-binding [MainViewModel]ViewModel
-     */
-    var onPokemonUpdated: ( (List<PokemonModel>) -> Unit )? = null
-        set(value) {
-            field = value
-            onPokemonUpdated?.invoke(pokemons)
+    val pokemons : List<Pokemon>
+        get() = fetchPokemonsDataUseCase.repository.pokemons
+
+    fun getFreshData() {
+        Log.d(TAG, "getFreshData()")
+        viewModelScope.launch {
+            fetchPokemonsDataUseCase.invoke()
         }
-
-    fun retrievePokemons() {
-        repository.getAllPokemon()
     }
 
-    fun savePokemon(pokemon: PokemonModel) {
-        //TODO guardar el pokemon a la BD
-//        repository.savedToPokemon(pokemonDb, onDismissType)
+    companion object {
+        private const val TAG = "munky.MainViewModel"
     }
 }
 
