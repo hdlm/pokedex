@@ -1,5 +1,27 @@
 <resources>
     <string name="app_name">Pokedex</string>
-    <string name="loading">Loading data...</string>
+    <string name="loading">Pokedex edición para demostración</string>
     <string name="pokemon_details_title">Pokemon details</string>
+    <string name="welcome">Bienvenido</string>
+    <string name="button_continue">Continuar</string>
+
+    <string name="aipom">ic_aipom.xml</string>
+    <string name="arbok">ic_arbok.xml</string>
+    <string name="beedrill">ic_beedrill.xml</string>
+    <string name="bulbasaur">ic_bulbasaur.xml</string>
+    <string name="butterfree">ic_butterfree.xml</string>
+    <string name="caterpie">ic_caterpie.xml</string>
+    <string name="charizard">ic_charizard.xml</string>
+    <string name="cloyster">ic_cloyster.xml</string>
+    <string name="cyndaquil">ic_cyndaquil.xml</string>
+    <string name="exeggutor">ic_exeggutor.xml</string>
+    <string name="farfetchd">ic_farfetchd.xml</string>
+    <string name="gastly">ic_gastly.xml</string>
+    <string name="gengar">ic_gengar.xml</string>
+    <string name="golem">ic_golem.xml</string>
+    <string name="pichu">ic_pichu.xml</string>
+    <string name="wigglytuff">ic_wigglytuff.xml</string>
+    <string name="zubat">ic_zubat.xml</string>
+
+
 </resources>

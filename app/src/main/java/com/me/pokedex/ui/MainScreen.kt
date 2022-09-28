@@ -1,82 +1,66 @@
-package com.me.pokedex.ui.theme
+package com.me.pokedex.ui
 
-import androidx.compose.foundation.Image
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.me.pokedex.R
-import com.me.pokedex.commons.emptyComposable
-import com.me.pokedex.commons.loadPicture
-import com.me.pokedex.commons.topBarFun
-import com.me.pokedex.presentation.MainViewModel
-import com.me.pokedex.presentation.domain.Pokemon
-import org.koin.androidx.compose.getViewModel
-
-const val CANT_IMG = 20
-const val DEFAULT_IMAGE = R.mipmap.ic_empty
-const val DEFAULT_IMAGE_URL = "https://api.chucknorris.io/img/chucknorris_logo_coloured_small@2x.png"
 
 @Composable
-fun MainScreen(
-    viewModel: MainViewModel = getViewModel(),
-    actionBarFun: topBarFun = { emptyComposable() },
-) {
-    val showLoading = remember { mutableStateOf(false) }
-    val selectedIndex = remember { mutableStateOf(0) }
+fun MainScreen() {
 
-    Scaffold(
-        topBar = {
-            actionBarFun (selectedIndex.value)
-        },
-    ) {
-        when (selectedIndex.value) {
-            0 -> { showLoading.value = true }
-//            1 -> { PokemonList(viewModel) }
-        }
-    }
-}
-/*
+    val heartTransition = rememberInfiniteTransition()
 
-@Composable
-fun PokemonList(viewModel: MainViewModel) {
-    LazyColumn {
-        items(items) { item -> ListItem(item) }
-    }
-}
-
-@Composable
-fun ListItem(pokemon: Pokemon, modifier: Modifier = Modifier) {
-    Column(modifier = Modifier.padding(8.dp)) {
-        Text(
-            text = pokemon.nombre,
-            style = MaterialTheme.typography.h3
+    val volumeHeart by heartTransition.animateFloat(
+        initialValue = 80f,
+        targetValue = 200f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 800,
+                delayMillis = 100,
+                easing = FastOutLinearInEasing
+            ),
+            repeatMode = RepeatMode.Reverse
         )
-        Spacer(modifier = modifier.height(8.dp))
-    }
-}
+    )
 
-@Composable
-fun ListPictures(imgUrl: String) {
-    LazyRow {
-        val image = loadPicture(url = imgUrl , defaultImage = DEFAULT_IMAGE)
-        if (image.value != null) {
-            Image(
-                bitmap = image.value!!.asImageBitmap(),
-                contentDescription = ""
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(id = R.string.welcome),
+                fontSize = 40.sp,
+                fontWeight = FontWeight.ExtraBold,
+                fontFamily = FontFamily.Cursive,
+                textAlign = TextAlign.Center
+            )
+
+            Icon(
+                imageVector = Icons.Filled.Favorite,
+                contentDescription = "Icono Corazón",
+                tint = Color.Red,
+                modifier = Modifier.size(volumeHeart.dp)
             )
         }
     }
-
-}*/
+}

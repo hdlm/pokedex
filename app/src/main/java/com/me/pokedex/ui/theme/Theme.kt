@@ -7,15 +7,16 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
 private val DarkColorPalette = darkColors(
-    primary = GreenNormal,
-    primaryVariant = GreenDark,
-    secondary = GreenLight
+    primary = Beige,
+    primaryVariant = OrangeNormal,
+    secondary = Grey
 )
 
 private val LightColorPalette = lightColors(
-    primary = BlueNormal,
-    primaryVariant = BlueDark,
-    secondary = BlueLight
+    primary = OrangeNormal,
+    primaryVariant = OrangeDark,
+    secondary = OrangeYellow
+
 
     /* Other default colors to override
     background = Color.White,
@@ -37,7 +38,7 @@ fun PokedexTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
 
     MaterialTheme(
         colors = colors,
-        typography = Typography,
+        typography = typography,
         shapes = Shapes,
         content = content
     )
