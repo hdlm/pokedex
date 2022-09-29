@@ -16,31 +16,29 @@ open class PokemonRepositoryImpl : PokemonRepository, KoinComponent {
     private val apiClient: ApiAdapter by inject()
     private val localRepository by inject<PokemonLocalRepository>()
 
-    private val mPokemons: MutableList<Pokemon> = mutableListOf()
-    override val pokemons: MutableList<Pokemon>
-        get() = mPokemons
-
     override suspend fun fetchPokemons() {
         Log.d(TAG, "fetchPokemons()")
         val pokemons: List<PokemonResultDto>? = apiClient.fetchPokemons()
         Log.d(TAG, "fetchPokemons -> apiClient returned ${pokemons!!.count()} pokemons")
 
-        pokemons?.let { items ->
+        pokemons.let { items ->
             items.forEach { item ->
                 var pokemonDetails : PokemonDetailsDto? = apiClient.fetchPokemon(item.url)
-                Log.d(TAG, "fetchPokemons -> loaded from REST API, pokemon: ${pokemonDetails!!.name}")
-                var pokemon : Pokemon = pokemonDetails.toPokemon(item.url)
-                pokemon?.let {
-                    mPokemons.add(pokemon)
-                    Log.d(TAG, "fetchPokemons -> saving to local database, pokemon: ${pokemon.nombre}")
-                    localRepository.savedToPokemon(
-                        pokemon = pokemon.toPokemonDb(),
-                        onDone = {}
-                    )
+                pokemonDetails?.let {
+                    Log.d(TAG, "fetchPokemons -> loaded from REST API, pokemon: ${pokemonDetails!!.name}")
+                    var pokemon : Pokemon = pokemonDetails.toPokemon(item.url)
+                    pokemon.let {
+                        Log.d(TAG, "fetchPokemons -> saving to local database, pokemon: ${pokemon.nombre}")
+                        localRepository.savedToPokemon(
+                            pokemon = pokemon.toPokemonDb(),
+                            onDone = {}
+                        )
+                    }
+                    Log.d(TAG, "fetchPokemons, saved ${items.count()} register(s) into database")
+                } ?: run {
+                    Log.d(TAG, "fetchPokemons, there was have a problem loading data from the REST API")
                 }
-                Log.d(TAG, "fetchPokemons, saved ${mPokemons.count()} register(s) into database")
             }
-
         }
     }
 

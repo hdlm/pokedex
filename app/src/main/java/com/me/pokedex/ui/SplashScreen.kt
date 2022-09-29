@@ -38,59 +38,6 @@ import org.koin.androidx.compose.get
 private const val TAG = "munky.LoadingScreen"
 private val items = PokeImageResources.items
 
-@SuppressLint("CoroutineCreationDuringComposition")
-@Composable
-fun oldSplashScreen(
-    viewModel: MainViewModel = get(),
-    onScreenLoaded: onDismissTypeSuspend
-) {
-    val job = Job()
-    val scope = CoroutineScope(Dispatchers.IO + job)
-
-    val pokemonItem = remember { mutableStateOf(items[0])}
-    var musicStarted by remember { mutableStateOf(false) }
-
-    val onImageLoaded : (PokeImage) -> Unit = { item ->
-        scope.launch(Dispatchers.Main) {
-            pokemonItem.value = item
-        }
-    }
-
-
-
-    ListItem(pokemonItem.value, modifier = Modifier.fillMaxSize())
-    Log.d(TAG, "SplashScreen")
-
-}
-
-
-
-
-
-
-@Composable
-fun ListItem(pokeImg: PokeImage, modifier : Modifier = Modifier) {
-    Log.d(TAG, "ListItem - " + stringResource(pokeImg.pokeNameResourceId) )
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Image (
-            modifier = Modifier.size(170.dp, 200.dp),
-            painter = painterResource(id = pokeImg.pokeImageResourceId),
-            contentScale = ContentScale.Fit,
-            contentDescription = stringResource(pokeImg.pokeNameResourceId),
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = stringResource(pokeImg.pokeNameResourceId),
-            style = typography.h1
-        )
-    }
-}
-
-
-
 @Composable
 fun SplashScreen(navController: NavController) {
 

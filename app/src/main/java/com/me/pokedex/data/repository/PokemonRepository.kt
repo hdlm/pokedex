@@ -8,8 +8,6 @@ import org.koin.core.component.inject
 
 interface PokemonRepository {
 
-    val pokemons : MutableList<Pokemon>
-
     suspend fun fetchPokemons()
 
 }

@@ -6,7 +6,6 @@ import com.me.pokedex.presentation.domain.Pokemon
 import kotlinx.coroutines.flow.Flow
 
 interface PokemonLocalRepository {
-    val pokemons : MutableList<Pokemon>
 
     /**
      * Las funciones son responsables de salvar los pokemon en la base de datos

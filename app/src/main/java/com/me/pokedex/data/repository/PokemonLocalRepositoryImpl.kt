@@ -14,21 +14,18 @@ import kotlinx.coroutines.flow.map
 
 open class PokemonLocalRepositoryImpl : PokemonLocalRepository {
 
-    private val mPokemons: MutableList<Pokemon> = mutableListOf()
-    override val pokemons: MutableList<Pokemon>
-        get() = mPokemons
-
     private val pokemonDao: PokemonDao =
         AppDatabase.getInstance(MainActivity.context).pokemonDao()
 
-    override fun getAllPokemon(): Flow<List<Pokemon>> =
-        pokemonDao.getAllPokemon()
+    override fun getAllPokemon(): Flow<List<Pokemon>> = pokemonDao.getAllPokemon()
             .map {
-                Log.d(TAG, "getAllPokemon -> loading from Pokemons from database" )
+                Log.d(TAG, "getAllPokemon, loading Pokemons from database" )
                 val list : MutableList<Pokemon> = mutableListOf()
                 it.forEach { item ->
+                    Log.d(TAG, "getAllPokemon -> mapping '${item.nombre}' from DbModel to his/her domain")
                     var pokemon = item.toPokemon()
                     list.add(pokemon)
+                    Log.d(TAG, "getAllPokemon -> '${item.nombre}' added to list")
                 }
                 return@map list
             }
