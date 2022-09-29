@@ -13,4 +13,5 @@ interface PokemonLocalRepository {
     fun getAllPokemon(): Flow<List<Pokemon>>
     fun getPokemonById(pokemonId: String)
     suspend fun savedToPokemon(pokemon: PokemonDbModel, onDone: onDismissType)
+    suspend fun cleanData()
 }

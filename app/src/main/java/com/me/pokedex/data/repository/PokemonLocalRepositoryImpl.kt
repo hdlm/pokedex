@@ -44,6 +44,10 @@ open class PokemonLocalRepositoryImpl : PokemonLocalRepository {
         pokemonDao.insert(pokemon)
     }
 
+    override suspend fun cleanData() {
+        pokemonDao.deleteAll()
+    }
+
     private suspend fun savePokemon(pokemon: PokemonDbModel) {
         pokemonDao.insert(pokemon)
     }

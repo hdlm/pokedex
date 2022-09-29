@@ -2,6 +2,7 @@ package com.me.pokedex.presentation
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.me.pokedex.commons.onDismissComposableType
 import com.me.pokedex.presentation.usecase.FetchPokemonsDataUseCase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,6 +21,13 @@ class MainViewModel(
         Log.d(TAG, "getFreshData()")
         viewModelScope.launch {
             fetchPokemonsDataUseCase.invoke()
+        }
+    }
+
+    fun cleanData() {
+        Log.d(TAG, "cleanData()")
+        viewModelScope.launch {
+            fetchPokemonsDataUseCase.cleanData()
         }
     }
 
