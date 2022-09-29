@@ -8,42 +8,43 @@ import java.util.*
 object MapperPokemon {
 
     // extensions
-    fun PokemonDetailsDto.toPokemon() : Pokemon {
+    fun PokemonDetailsDto.toPokemon(url: String? = null) : Pokemon {
 
         val fnToListOfUrlImages : (PokemonSpriteDto) -> List<String>? = { sprite ->
-            var imgUrls : MutableList<String>? = mutableListOf()
-            imgUrls?.let {
+            val imgUrls : MutableList<String> = mutableListOf()
+            imgUrls.let {
                 imgUrls.add(sprite.front_default!!)
                 imgUrls.add(sprite.back_default!!)
                 imgUrls
-            } ?: run { null }
+            }
         }
         val fnToListTipo : (List<PokemonTypeDto>) -> List<String> = { pokemonTypes ->
-            var tipos : MutableList<String> = mutableListOf()
-            pokemonTypes.forEachIndexed { index, tipeModel ->
+            val tipos : MutableList<String> = mutableListOf()
+            pokemonTypes.forEachIndexed { _, tipeModel ->
                 tipos.add(tipeModel.type.name)
             }
             tipos
         }
         val fnToListAtaques : (List<PokemonMoveDto>) -> List<String> = { moveModels ->
-            var ataques : MutableList<String> = mutableListOf()
+            val ataques : MutableList<String> = mutableListOf()
             moveModels.forEach { item ->
                 ataques.add(item.move.name)
             }
             ataques
         }
         val fnToListHabilidades : (List<PokemonAbilityModel>) -> List<String> = { abilitiesModel ->
-            var habilidades : MutableList<String> = mutableListOf()
+            val habilidades : MutableList<String> = mutableListOf()
             abilitiesModel.forEach { item ->
                 habilidades.add(item.ability.name)
             }
             habilidades
         }
 
-        var pokemon : Pokemon? = null
+        var pokemon: Pokemon?
         this.apply {
             pokemon = Pokemon(
                 id = UUID.randomUUID().toString(),
+                url = url,
                 nombre = name,
                 imgUrl = fnToListOfUrlImages(sprites),
                 tipo = fnToListTipo(types),
@@ -81,18 +82,17 @@ object MapperPokemon {
 
     fun PokemonDbModel.toPokemon() : Pokemon {
         this.apply {
-            val pokemon = Pokemon(
+            return Pokemon(
                 id = uid,
                 url = fkId,
                 nombre = nombre,
                 imgUrl = imgUrl,
                 tipo = tipo,
-                evolucion = evolucion!!,
+                evolucion = evolucion,
                 ataques = ataques,
                 habilidades = habilidades,
                 lugares = null
             )
-            return pokemon
         }
     }
 

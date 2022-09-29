@@ -27,6 +27,10 @@ import androidx.navigation.NavController
 import com.me.pokedex.R
 import com.me.pokedex.commons.*
 import com.me.pokedex.presentation.MainViewModel
+import com.me.pokedex.router.DestinationScreen
+import com.me.pokedex.ui.theme.OrangeLight
+import com.me.pokedex.ui.theme.OrangeNormal
+import com.me.pokedex.ui.theme.OrangeSunset
 import com.me.pokedex.ui.theme.typography
 import kotlinx.coroutines.*
 import org.koin.androidx.compose.get
@@ -52,16 +56,7 @@ fun oldSplashScreen(
         }
     }
 
-    if( !musicStarted) {
-        MusicTheme.playIntro()
-        musicStarted = true
-        scope.launch {
-            items.forEach {  item ->
-//                onImageLoaded(item)
-                delay(1000)
-            }
-        }
-    }
+
 
     ListItem(pokemonItem.value, modifier = Modifier.fillMaxSize())
     Log.d(TAG, "SplashScreen")
@@ -151,17 +146,18 @@ fun AnimationSplashContent(
 fun DesignSplashScreen(
     modifier: Modifier = Modifier,
     imagePainter: Painter,
-    scaleAnimation: Animatable<Float, AnimationVector1D>
+    scaleAnimation: Animatable<Float, AnimationVector1D>,
 ) {
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(
                 Brush.verticalGradient(
                     colors = listOf(
-                        Color(239, 127, 26),
-                        Color(120, 40, 140),
-                        Color(0, 47, 187),
+                        OrangeNormal,
+                        OrangeSunset,
+                        OrangeLight,
                     )
                 )
             ),
@@ -184,6 +180,7 @@ fun DesignSplashScreen(
                 textAlign = TextAlign.Center,
                 modifier = modifier.scale(scale = scaleAnimation.value)
             )
+            LinearProgressIndicator()
         }
     }
 

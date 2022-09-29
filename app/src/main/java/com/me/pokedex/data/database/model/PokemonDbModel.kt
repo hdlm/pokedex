@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "pokemon")
 data class PokemonDbModel (
     @PrimaryKey val uid: String,
-    @ColumnInfo(name = "fk_id") val fkId: String,
+    @ColumnInfo(name = "fk_id") val fkId: String?,
     @ColumnInfo(name = "nombre") val nombre: String,
     @ColumnInfo(name = "url_image") val imgUrl: List<String>?,
     @ColumnInfo(name = "tipo") val tipo: List<String>?,

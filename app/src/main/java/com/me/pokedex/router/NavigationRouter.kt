@@ -1,18 +1,22 @@
-package com.me.pokedex.ui
+package com.me.pokedex.router
 
-import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.me.pokedex.commons.MusicTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.me.pokedex.ui.MainScreen
+import com.me.pokedex.ui.SplashScreen
 
-@SuppressLint("CoroutineCreationDuringComposition")
+sealed class DestinationScreen(val route: String) {
+    object SplashScreenDest : DestinationScreen(route =
+    "splash_screen")
+    object MainScreenDest : DestinationScreen(route = "main_screen")
+}
+
+
 @Composable
-fun NavigationScreen() {
+fun NavigationRouter() {
 
     val navController = rememberNavController()
 
@@ -23,9 +27,7 @@ fun NavigationScreen() {
 
         composable(route = DestinationScreen.SplashScreenDest.route) {
             SplashScreen(navController = navController)
-            GlobalScope.launch(Dispatchers.Default) {
-                MusicTheme.playIntro()
-            }
+            MusicTheme.playIntro()
         }
 
         composable(route = DestinationScreen.MainScreenDest.route) {

@@ -21,27 +21,28 @@ open class PokemonRepositoryImpl : PokemonRepository, KoinComponent {
         get() = mPokemons
 
     override suspend fun fetchPokemons() {
-        Log.d(TAG, "fetchPokemons() before call apiClient")
+        Log.d(TAG, "fetchPokemons()")
         val pokemons: List<PokemonResultDto>? = apiClient.fetchPokemons()
-        Log.d(TAG, "fetchPokemons() after call apiClient")
-        Log.d(TAG, "proceding to load = ${pokemons!!.count()} pokemons")
+        Log.d(TAG, "fetchPokemons -> apiClient returned ${pokemons!!.count()} pokemons")
 
         pokemons?.let { items ->
             items.forEach { item ->
                 var pokemonDetails : PokemonDetailsDto? = apiClient.fetchPokemon(item.url)
-                Log.d(TAG, "fetchPokemons -> loaded pokemon: ${pokemonDetails!!.name}")
-                var pokemon : Pokemon = pokemonDetails.toPokemon()
-                mPokemons.add(pokemon)
-                Log.d(TAG, "fetchPokemons -> saving pokemon: ${pokemon.nombre} to database")
-                localRepository.savedToPokemon(
-                    pokemon = pokemon.toPokemonDb(),
-                    onDone = {}
-                )
+                Log.d(TAG, "fetchPokemons -> loaded from REST API, pokemon: ${pokemonDetails!!.name}")
+                var pokemon : Pokemon = pokemonDetails.toPokemon(item.url)
+                pokemon?.let {
+                    mPokemons.add(pokemon)
+                    Log.d(TAG, "fetchPokemons -> saving to local database, pokemon: ${pokemon.nombre}")
+                    localRepository.savedToPokemon(
+                        pokemon = pokemon.toPokemonDb(),
+                        onDone = {}
+                    )
+                }
+                Log.d(TAG, "fetchPokemons, saved ${mPokemons.count()} register(s) into database")
             }
 
         }
     }
-
 
     companion object {
         private const val TAG = "munky.PokemonRepositoryImpl"
